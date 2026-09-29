@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Absensi Sung - Absensi Online Neptunus</title>
+<meta name="description" content="Absensi online keren dengan animasi planet Neptunus muter. Absensi Hadir Izin Sakit lengkap keterangan.">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@800&family=Instrument+Sans:wght@600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f2f1eb;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;font-family:'Instrument Sans',sans-serif}
+.phone{width:100%;max-width:380px;background:white;border:2.5px solid #111;border-radius:28px;overflow:hidden;box-shadow:12px 12px 0 #111}
+.neptune-wrap{height:150px;background:#111;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:2.5px solid #111}
+.neptune{width:90px;height:90px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #6dd5ff, #3a6dd8 35%, #1a2a8a 70%);box-shadow:inset -12px -8px 20px rgba(0,0,0,.6),0 0 30px rgba(93,173,255,.5);animation:spin 10s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.form{padding:0 20px 20px 20px}
+.lab{font-size:9px;font-weight:700;letter-spacing:1px;opacity:.5;margin:12px 0 5px}
+.inp{width:100%;padding:12px 14px;border:2px solid #111;border-radius:12px;font-size:13px;font-weight:600;background:#fcfcf9;outline:none}
+.inp:focus{background:white;box-shadow:3px 3px 0 #111}
+.chip{flex:1;padding:10px;border:2px solid #111;border-radius:10px;font-size:10px;font-weight:800;text-align:center;cursor:pointer;background:white}
+.chip.active{background:#fde047;box-shadow:2px 2px 0 #111;transform:translate(-1px,-1px)}
+.btn{width:100%;margin-top:16px;padding:14px;background:#111;color:white;border-radius:14px;font-family:'Bricolage Grotesque';font-size:15px;font-weight:800;cursor:pointer;border:2px solid #111}
+.btn:active{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #fde047}
+</style>
+</head>
+<body>
+<div class="phone">
+<div class="neptune-wrap"><div class="neptune"></div><div style="position:absolute;bottom:8px;left:14px;color:white;font-family:'Bricolage Grotesque';font-size:10px;letter-spacing:1.5px;opacity:.6">PLANET <b style="color:#fde047">NEPTUNE</b></div></div>
+<div style="padding:16px 20px;display:flex;justify-content:space-between;align-items:center">
+<h1 style="font-family:'Bricolage Grotesque';font-size:22px;line-height:.9;letter-spacing:-1px">ABSENSI<br><span style="background:#fde047;padding:2px 8px;border:2px solid #111;border-radius:10px;transform:rotate(-2deg);display:inline-block">SUNG</span></h1>
+<div style="background:#111;color:#fde047;padding:5px 10px;border-radius:100px;font-size:10px;font-weight:800">● ONLINE</div>
+</div>
+<div class="form">
+<div class="lab">EMAIL GURU TUJUAN</div><input id="to_email" class="inp" value="lumutfrefiregg@gmail.com">
+<div class="lab">NAMA LENGKAP</div><input id="nama" class="inp" placeholder="Nama lengkap kamu">
+<div class="lab">KELAS</div><input id="kelas" class="inp" placeholder="XII RPL 1">
+<div class="lab">STATUS KEHADIRAN</div><div style="display:flex;gap:6px"><div class="chip active" data-v="Hadir">HADIR</div><div class="chip" data-v="Izin">IZIN</div><div class="chip" data-v="Sakit">SAKIT</div></div>
+<div class="lab">KETERANGAN / ALASAN</div><textarea id="ket" class="inp" style="height:80px;resize:none" placeholder="Contoh: Sakit demam, Izin acara keluarga... (kosongkan jika Hadir)"></textarea>
+<button class="btn" id="btn" onclick="kirim()">KIRIM ABSEN →</button>
+</div>
+</div>
+<script>
+emailjs.init("mOFwpHiuH_ZYcTOsN");
+let status="Hadir";
+document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+c.classList.add('active'); status=c.dataset.v;
+if(status!=='Hadir') document.getElementById('ket').focus();
+});
+function kirim(){
+const p={
+to_email:document.getElementById('to_email').value,
+nama:document.getElementById('nama').value,
+kelas:document.getElementById('kelas').value,
+status:status,
+keterangan:document.getElementById('ket').value || '-',
+jam:new Date().toLocaleString('id-ID')
+};
+if(!p.nama||!p.kelas){alert("Isi nama & kelas dulu su!");return;}
+if((status==='Izin'||status==='Sakit') && !document.getElementById('ket').value){alert("Kalo Izin/Sakit wajib isi keterangan su!");return;}
+document.getElementById('btn').innerText="MENGIRIM...";
+document.getElementById('btn').disabled=true;
+emailjs.send("service_1q70i88","template_zolfaoo",p).then(()=>{
+alert("BERHASIL! 🪐 Absen kekirim ke "+p.to_email);
+document.getElementById('btn').innerText="KIRIM ABSEN →";
+document.getElementById('btn').disabled=false;
+},e=>{
+alert("GAGAL: "+e.text);
+document.getElementById('btn').innerText="KIRIM ABSEN →";
+document.getElementById('btn').disabled=false;
+});
+}
+</script>
+</body>
+</html>
